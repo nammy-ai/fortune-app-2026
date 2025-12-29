@@ -164,10 +164,6 @@
             box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
         }
 
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
         .result {
             display: none;
         }
@@ -196,7 +192,6 @@
             .header h1 {
                 font-size: 1.5em;
             }
-
             .fortune-options {
                 grid-template-columns: 1fr;
             }
@@ -213,7 +208,7 @@
         </div>
 
         <div class="card" id="inputSection">
-            <div id="fortuneForm">
+            <div>
                 <div class="form-group">
                     <label for="name">お名前（ペンネームOK）</label>
                     <input type="text" id="name" placeholder="例：花子">
@@ -276,7 +271,7 @@
         }
         createStars();
 
-        // 保存されたデータを復元
+        // 保存データ復元
         const savedName = localStorage.getItem('fortune_name');
         const savedBirthdate = localStorage.getItem('fortune_birthdate');
         const savedFortune = localStorage.getItem('fortune_type');
@@ -288,31 +283,177 @@
             if (radio) radio.checked = true;
         }
 
-        // タロットカード（簡略版）
+        // タロットカードデータ
         const tarotCards = [
-            { name: "愚者", symbol: "🃏" },
-            { name: "魔術師", symbol: "🎩" },
-            { name: "女教皇", symbol: "📿" },
-            { name: "女帝", symbol: "👑" },
-            { name: "皇帝", symbol: "⚔️" },
-            { name: "教皇", symbol: "🙏" },
-            { name: "恋人", symbol: "💕" },
-            { name: "戦車", symbol: "🏇" },
-            { name: "力", symbol: "🦁" },
-            { name: "隠者", symbol: "🏮" },
-            { name: "運命の輪", symbol: "☸️" },
-            { name: "正義", symbol: "⚖️" },
-            { name: "吊された男", symbol: "🙃" },
-            { name: "死神", symbol: "💀" },
-            { name: "節制", symbol: "🍶" },
-            { name: "悪魔", symbol: "👹" },
-            { name: "塔", symbol: "🗼" },
-            { name: "星", symbol: "⭐" },
-            { name: "月", symbol: "🌙" },
-            { name: "太陽", symbol: "☀️" },
-            { name: "審判", symbol: "📯" },
-            { name: "世界", symbol: "🌍" }
+            { 
+                name: "愚者", 
+                symbol: "🃏",
+                upright: "新しい始まり、自由、冒険心、純粋さ。恐れることなく一歩を踏み出す時です。",
+                reversed: "無謀さ、計画性の欠如。慎重さが必要な時期です。"
+            },
+            { 
+                name: "魔術師", 
+                symbol: "🎩",
+                upright: "創造力、実行力、才能の開花。あなたの持つスキルを最大限に活かせる時です。",
+                reversed: "力の乱用、集中力不足。焦らず基礎を固めましょう。"
+            },
+            { 
+                name: "女教皇", 
+                symbol: "📿",
+                upright: "直感、知恵、内なる声。静かに自分の心の声に耳を傾ける時です。",
+                reversed: "秘密、感情の抑圧。もっと素直になることが大切です。"
+            },
+            { 
+                name: "女帝", 
+                symbol: "👑",
+                upright: "豊かさ、創造性、愛情。周囲を包み込む優しさが幸運を引き寄せます。",
+                reversed: "依存、過保護。自立心を大切にしましょう。"
+            },
+            { 
+                name: "皇帝", 
+                symbol: "⚔️",
+                upright: "リーダーシップ、安定、秩序。責任ある立場で力を発揮できます。",
+                reversed: "支配欲、頑固さ。柔軟性を持つことが成功の鍵です。"
+            },
+            { 
+                name: "教皇", 
+                symbol: "🙏",
+                upright: "伝統、教え、精神的な導き。師や先輩からの学びが深まります。",
+                reversed: "形式主義、独断。自分らしさを大切にしましょう。"
+            },
+            { 
+                name: "恋人", 
+                symbol: "💕",
+                upright: "愛、調和、重要な選択。心からの絆が深まる時期です。",
+                reversed: "迷い、不調和。自分の気持ちと向き合う必要があります。"
+            },
+            { 
+                name: "戦車", 
+                symbol: "🏇",
+                upright: "勝利、前進、意志の力。目標に向かって突き進む力があります。",
+                reversed: "暴走、方向性の喪失。一度立ち止まって考えましょう。"
+            },
+            { 
+                name: "力", 
+                symbol: "🦁",
+                upright: "勇気、忍耐、優しさの強さ。内なる力で困難を乗り越えられます。",
+                reversed: "自信喪失、弱気。自分を信じることが大切です。"
+            },
+            { 
+                name: "隠者", 
+                symbol: "🏮",
+                upright: "内省、真理の探求、一人の時間。静かに自分と向き合う時です。",
+                reversed: "孤立、閉鎖的。周囲とのつながりを大切にしましょう。"
+            },
+            { 
+                name: "運命の輪", 
+                symbol: "☸️",
+                upright: "転機、幸運、新しいサイクル。大きな変化の時が訪れます。",
+                reversed: "停滞、運気の低下。焦らず時を待つことも必要です。"
+            },
+            { 
+                name: "正義", 
+                symbol: "⚖️",
+                upright: "公平、真実、バランス。正しい選択が良い結果をもたらします。",
+                reversed: "不公平、偏見。客観的な視点を持ちましょう。"
+            },
+            { 
+                name: "吊された男", 
+                symbol: "🙃",
+                upright: "視点の転換、献身、待つこと。新しい角度から物事を見る時です。",
+                reversed: "無駄な犠牲、停滞。行動する勇気が必要です。"
+            },
+            { 
+                name: "死神", 
+                symbol: "💀",
+                upright: "終わりと始まり、変容、再生。古いものを手放し新しい自分へ。",
+                reversed: "変化への抵抗、停滞。変化を恐れず受け入れましょう。"
+            },
+            { 
+                name: "節制", 
+                symbol: "🍶",
+                upright: "調和、バランス、適度さ。心と体のバランスが整います。",
+                reversed: "不摂生、極端さ。中庸を心がけましょう。"
+            },
+            { 
+                name: "悪魔", 
+                symbol: "👹",
+                upright: "誘惑、束縛、物質主義。執着を手放す必要があります。",
+                reversed: "解放、自由。束縛から解き放たれる時です。"
+            },
+            { 
+                name: "塔", 
+                symbol: "🗼",
+                upright: "突然の変化、崩壊、啓示。古い価値観が崩れ新しい道が開けます。",
+                reversed: "危機回避、恐れ。変化を恐れず前を向きましょう。"
+            },
+            { 
+                name: "星", 
+                symbol: "⭐",
+                upright: "希望、癒し、インスピレーション。明るい未来への希望が見えます。",
+                reversed: "失望、不安。信じる心を取り戻しましょう。"
+            },
+            { 
+                name: "月", 
+                symbol: "🌙",
+                upright: "直感、夢、不安。潜在意識からのメッセージに注目を。",
+                reversed: "混乱、幻想。現実をしっかり見つめましょう。"
+            },
+            { 
+                name: "太陽", 
+                symbol: "☀️",
+                upright: "成功、喜び、活力。最高の運気が訪れています。",
+                reversed: "一時的な停滞。もうすぐ光が差します。"
+            },
+            { 
+                name: "審判", 
+                symbol: "📯",
+                upright: "復活、目覚め、新生。過去を清算し新しいステージへ。",
+                reversed: "後悔、自己批判。自分を許し前に進みましょう。"
+            },
+            { 
+                name: "世界", 
+                symbol: "🌍",
+                upright: "完成、達成、統合。大きな目標を達成できる時です。",
+                reversed: "未完成、中途半端。最後まで諦めずに取り組みましょう。"
+            }
         ];
+
+        // 数秘術の意味
+        const numerologyMeanings = {
+            1: "リーダーシップと新しい始まり。自分の道を切り開く力強い年です。",
+            2: "協調と調和。人との繋がりが深まり、パートナーシップが重要になります。",
+            3: "創造性と表現。自己表現が花開き、喜びに満ちた年になります。",
+            4: "安定と基盤作り。着実な努力が実を結ぶ、堅実な年です。",
+            5: "変化と自由。新しい経験と冒険が待っている刺激的な年です。",
+            6: "愛と責任。家族や身近な人との絆が深まる温かい年です。",
+            7: "内省と精神性。自分自身と深く向き合い、真理を探求する年です。",
+            8: "成功と達成。物質的な豊かさと社会的な成功を手にする年です。",
+            9: "完成と手放し。一つのサイクルが終わり、新しい始まりへの準備をする年です。",
+            11: "直感と啓示。スピリチュアルな目覚めと高次の導きがある特別な年です。",
+            22: "マスタービルダー。大きな夢を現実化する力を持つパワフルな年です。",
+            33: "無条件の愛と奉仕。他者への献身が喜びとなる神聖な年です。"
+        };
+
+        // 運勢別アドバイス
+        const fortuneAdvice = {
+            work: {
+                title: "仕事運",
+                general: "2026年のあなたの仕事運は、数秘術とタロットが示す通り、大きな可能性に満ちています。"
+            },
+            money: {
+                title: "金運",
+                general: "2026年の金運は、賢明な選択と計画的な行動によって大きく開花します。"
+            },
+            love: {
+                title: "恋愛運（対人運）",
+                general: "2026年の人間関係は、真心と誠実さがキーワードとなります。"
+            },
+            health: {
+                title: "健康運",
+                general: "2026年の健康運は、心と体のバランスを保つことが何より大切です。"
+            }
+        };
 
         // 数秘術計算
         function calculateLifePath(dateString) {
@@ -350,119 +491,50 @@
             }));
         }
 
-        // ボタンクリックイベント
+        // ボタンクリック
         document.getElementById('submitBtn').addEventListener('click', async function() {
-            try {
-                const name = document.getElementById('name').value;
-                const birthdate = document.getElementById('birthdate').value;
-                const fortuneType = document.querySelector('input[name="fortune"]:checked').value;
+            const name = document.getElementById('name').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const fortuneType = document.querySelector('input[name="fortune"]:checked').value;
 
-                if (!name || !birthdate) {
-                    alert('お名前と生年月日を入力してください');
-                    return;
-                }
-
-                // データ保存
-                localStorage.setItem('fortune_name', name);
-                localStorage.setItem('fortune_birthdate', birthdate);
-                localStorage.setItem('fortune_type', fortuneType);
-
-                // 画面切り替え
-                document.getElementById('inputSection').style.display = 'none';
-                document.getElementById('resultSection').style.display = 'block';
-
-                // 数秘術計算
-                const lifePath = calculateLifePath(birthdate);
-                const personalYear = calculatePersonalYear(birthdate);
-
-                // カードを引く
-                const cards = drawCards();
-
-                // 少し待つ
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
-                // AI占い実行
-                await generateReading(name, lifePath, personalYear, fortuneType, cards);
-
-            } catch (error) {
-                console.error('エラー:', error);
-                alert('エラーが発生しました: ' + error.message);
-                document.getElementById('inputSection').style.display = 'block';
-                document.getElementById('resultSection').style.display = 'none';
+            if (!name || !birthdate) {
+                alert('お名前と生年月日を入力してください');
+                return;
             }
+
+            localStorage.setItem('fortune_name', name);
+            localStorage.setItem('fortune_birthdate', birthdate);
+            localStorage.setItem('fortune_type', fortuneType);
+
+            document.getElementById('inputSection').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
+
+            const lifePath = calculateLifePath(birthdate);
+            const personalYear = calculatePersonalYear(birthdate);
+            const cards = drawCards();
+
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            displayResults(name, lifePath, personalYear, fortuneType, cards);
         });
 
-        // AI占い実行
-        async function generateReading(name, lifePath, personalYear, fortuneType, cards) {
-            const fortuneNames = {
-                work: '仕事運',
-                money: '金運',
-                love: '恋愛運',
-                health: '健康運'
-            };
-
-            const prompt = `あなたは占いアプリのためのクリエイティブなメッセージを生成するライターです。以下の情報をもとに、占い風の創作的なメッセージを書いてください。これはエンターテインメント目的のフィクションです。
-
-名前: ${name}さん
-ライフパスナンバー: ${lifePath}
-2026年パーソナルイヤー: ${personalYear}
-選択した運勢: ${fortuneNames[fortuneType]}
-引いたカード: 
-- 過去: ${cards[0].name}（${cards[0].reversed ? '逆位置' : '正位置'}）
-- 現在: ${cards[1].name}（${cards[1].reversed ? '逆位置' : '正位置'}）
-- 未来: ${cards[2].name}（${cards[2].reversed ? '逆位置' : '正位置'}）
-
-以下の要素を含む、前向きで具体的なアドバイスメッセージを3-4段落で作成してください:
-1. 数秘術の数字から見た2026年の傾向
-2. 各タロットカードが示す時期ごとのメッセージ
-3. ${fortuneNames[fortuneType]}に関する具体的なアドバイス
-
-※これは創作的なエンターテインメントコンテンツです。温かく励ましのある内容でお願いします。`;
-
-            try {
-                const response = await fetch("https://api.anthropic.com/v1/messages", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        model: "claude-sonnet-4-20250514",
-                        max_tokens: 1000,
-                        messages: [{ role: "user", content: prompt }]
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('AI応答エラー: ' + response.status);
-                }
-
-                const data = await response.json();
-                const text = data.content.map(item => item.text || "").join("\n");
-
-                displayResults(name, lifePath, personalYear, fortuneType, cards, text);
-
-            } catch (error) {
-                console.error('エラー:', error);
-                document.getElementById('loading').innerHTML = `
-                    <p style="color: #ff6b6b;">エラーが発生しました</p>
-                    <p>${error.message}</p>
-                    <button class="submit-btn" onclick="location.reload()">戻る</button>
-                `;
-            }
-        }
-
         // 結果表示
-        function displayResults(name, lifePath, personalYear, fortuneType, cards, reading) {
-            const fortuneNames = {
-                work: '仕事運',
-                money: '金運',
-                love: '恋愛運',
-                health: '健康運'
-            };
+        function displayResults(name, lifePath, personalYear, fortuneType, cards) {
+            const advice = fortuneAdvice[fortuneType];
+            
+            // 鑑定メッセージ生成
+            let reading = `${advice.general}\n\n`;
+            reading += `ライフパスナンバー${lifePath}のあなたは、${numerologyMeanings[lifePath]}\n\n`;
+            reading += `2026年のパーソナルイヤー${personalYear}は、${numerologyMeanings[personalYear]}\n\n`;
+            
+            reading += `過去のカード「${cards[0].name}」は、${cards[0].reversed ? cards[0].reversed : cards[0].upright}\n\n`;
+            reading += `現在のカード「${cards[1].name}」は、${cards[1].reversed ? cards[1].reversed : cards[1].upright}\n\n`;
+            reading += `未来のカード「${cards[2].name}」は、${cards[2].reversed ? cards[2].reversed : cards[2].upright}\n\n`;
+            
+            reading += `これらのメッセージを総合すると、2026年のあなたは自分自身の内なる力を信じて前進することで、素晴らしい成果を手にすることができるでしょう。`;
 
-            // コピー用テキスト
             const copyText = `
-🐴 ${name}さんの2026年 ${fortuneNames[fortuneType]} 🐴
+🐴 ${name}さんの2026年 ${advice.title} 🐴
 
 【数秘術】
 ライフパスナンバー: ${lifePath}
@@ -483,7 +555,7 @@ ${reading}
             document.getElementById('loading').style.display = 'none';
             document.getElementById('results').innerHTML = `
                 <h2 style="color: #ffd700; text-align: center; margin-bottom: 20px;">
-                    🐴 ${name}さんの2026年 ${fortuneNames[fortuneType]} 🐴
+                    🐴 ${name}さんの2026年 ${advice.title} 🐴
                 </h2>
 
                 <div style="text-align: center; margin: 30px 0;">
@@ -509,7 +581,7 @@ ${reading}
                 </div>
 
                 <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px; line-height: 1.8; margin-bottom: 30px;">
-                    ${reading.split('\n').filter(p => p.trim()).map(p => `<p style="margin-bottom: 15px;">${p}</p>`).join('')}
+                    ${reading.split('\n\n').map(p => `<p style="margin-bottom: 15px;">${p}</p>`).join('')}
                 </div>
 
                 <button class="submit-btn" onclick="copyResult()" style="background: linear-gradient(135deg, #667eea, #764ba2); margin-bottom: 15px;">
@@ -527,7 +599,6 @@ ${reading}
             `;
             document.getElementById('results').style.display = 'block';
 
-            // コピー機能
             window.copyResult = function() {
                 navigator.clipboard.writeText(copyText).then(() => {
                     alert('✅ 鑑定結果をコピーしました!\nLINEやメモ帳に貼り付けてご利用ください。');
@@ -542,9 +613,7 @@ ${reading}
                 });
             };
 
-            // 公式LINE誘導
             window.openOfficialLine = function() {
-                // ★★★ ここに公式LINEのURLを設定してください ★★★
                 const lineURL = 'https://lin.ee/XXXXXXX';
                 window.open(lineURL, '_blank');
             };
